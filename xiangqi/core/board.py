@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List
+import unicodedata
 
 from .const import (
     BOARD_SIZE, BOARD_ROWS, BOARD_COLS,
@@ -88,16 +89,51 @@ class Board:
 
     def pretty(self) -> str:
         """文本棋盘显示"""
+        cell_w = 4
         lines = []
+
+        header = "    " + "".join(
+            Board._pad_center(str(c), cell_w) for c in range(BOARD_COLS)
+        )
+        lines.append(header)
+
         for r in range(BOARD_ROWS):
-            row = []
-            for c in range(BOARD_COLS):
-                row.append(char_of(self.squares[rc_to_i(r, c)]))
-            lines.append(" ".join(row))
-        turn = "RED" if self.side_to_move == Side.RED else "BLACK"
+            row_str = "".join(
+                Board._pad_center(char_of(self.squares[rc_to_i(r, c)]), cell_w) for c in range(BOARD_COLS)
+            )
+            lines.append(f"{Board._pad_center(str(r), 3)} {row_str}")
+
+            if r == 4:
+                mid = Board._pad_center("楚河", BOARD_COLS * cell_w // 2) + Board._pad_center("汉界", BOARD_COLS * cell_w // 2)
+                lines.append(f"    {mid}")
+
+        turn = "执帅方" if self.side_to_move == Side.RED else "执将方"
         return "\n".join(lines) + f"\nTurn: {turn}"
 
     def iter_pieces(self, side: Side):
         for i, p in enumerate(self.squares):
             if p != 0 and side_of(p) == side:
                 yield i, p
+
+    def _wcwidth(ch: str) -> int:
+        return 2 if unicodedata.east_asian_width(ch) in ('W', 'F') else 1
+
+    def _wcswidth(s: str) -> int:
+        return sum(Board._wcwidth(ch) for ch in s)
+
+    def _pad_center(s: str, width: int) -> str:
+        s = str(s)
+        w = Board._wcswidth(s)
+        if w >= width:
+            return s
+        pad = width - w
+        left = pad // 2
+        right = pad - left
+        return " " * left + s + " " * right
+
+
+
+
+
+
+
