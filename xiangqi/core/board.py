@@ -29,34 +29,34 @@ class Board:
             s[i] = 0
 
         # 黑方（上）
-        s[rc_to_i(0, 0)] = -Piece.ROOK
-        s[rc_to_i(0, 1)] = -Piece.KNIGHT
-        s[rc_to_i(0, 2)] = -Piece.ELEPHANT
-        s[rc_to_i(0, 3)] = -Piece.ADVISOR
-        s[rc_to_i(0, 4)] = -Piece.KING
-        s[rc_to_i(0, 5)] = -Piece.ADVISOR
-        s[rc_to_i(0, 6)] = -Piece.ELEPHANT
-        s[rc_to_i(0, 7)] = -Piece.KNIGHT
-        s[rc_to_i(0, 8)] = -Piece.ROOK
-        s[rc_to_i(2, 1)] = -Piece.CANNON
-        s[rc_to_i(2, 7)] = -Piece.CANNON
+        s[rc_to_i(0, 0)] = -Piece.CHE
+        s[rc_to_i(0, 1)] = -Piece.MA
+        s[rc_to_i(0, 2)] = -Piece.XIANG
+        s[rc_to_i(0, 3)] = -Piece.SHI
+        s[rc_to_i(0, 4)] = -Piece.SHUAI
+        s[rc_to_i(0, 5)] = -Piece.SHI
+        s[rc_to_i(0, 6)] = -Piece.XIANG
+        s[rc_to_i(0, 7)] = -Piece.MA
+        s[rc_to_i(0, 8)] = -Piece.CHE
+        s[rc_to_i(2, 1)] = -Piece.PAO
+        s[rc_to_i(2, 7)] = -Piece.PAO
         for c in [0, 2, 4, 6, 8]:
-            s[rc_to_i(3, c)] = -Piece.PAWN
+            s[rc_to_i(3, c)] = -Piece.BING
 
         # 红方（下）
-        s[rc_to_i(9, 0)] = +Piece.ROOK
-        s[rc_to_i(9, 1)] = +Piece.KNIGHT
-        s[rc_to_i(9, 2)] = +Piece.ELEPHANT
-        s[rc_to_i(9, 3)] = +Piece.ADVISOR
-        s[rc_to_i(9, 4)] = +Piece.KING
-        s[rc_to_i(9, 5)] = +Piece.ADVISOR
-        s[rc_to_i(9, 6)] = +Piece.ELEPHANT
-        s[rc_to_i(9, 7)] = +Piece.KNIGHT
-        s[rc_to_i(9, 8)] = +Piece.ROOK
-        s[rc_to_i(7, 1)] = +Piece.CANNON
-        s[rc_to_i(7, 7)] = +Piece.CANNON
+        s[rc_to_i(9, 0)] = +Piece.CHE
+        s[rc_to_i(9, 1)] = +Piece.MA
+        s[rc_to_i(9, 2)] = +Piece.XIANG
+        s[rc_to_i(9, 3)] = +Piece.SHI
+        s[rc_to_i(9, 4)] = +Piece.SHUAI
+        s[rc_to_i(9, 5)] = +Piece.SHI
+        s[rc_to_i(9, 6)] = +Piece.XIANG
+        s[rc_to_i(9, 7)] = +Piece.MA
+        s[rc_to_i(9, 8)] = +Piece.CHE
+        s[rc_to_i(7, 1)] = +Piece.PAO
+        s[rc_to_i(7, 7)] = +Piece.PAO
         for c in [0, 2, 4, 6, 8]:
-            s[rc_to_i(6, c)] = +Piece.PAWN
+            s[rc_to_i(6, c)] = +Piece.BING
 
         self.side_to_move = Side.RED
         self.move_stack.clear()
@@ -87,7 +87,7 @@ class Board:
         self.side_to_move = Side(-int(self.side_to_move))
 
     def pretty(self) -> str:
-        """文本棋盘（调试神器）"""
+        """文本棋盘显示"""
         lines = []
         for r in range(BOARD_ROWS):
             row = []

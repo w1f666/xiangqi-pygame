@@ -19,13 +19,13 @@ class Side(IntEnum):
 
 class Piece(IntEnum):
     EMPTY = 0
-    KING = 1     # 将/帅
-    ADVISOR = 2  # 士/仕
-    ELEPHANT = 3 # 象/相
-    ROOK = 4     # 车
-    KNIGHT = 5   # 马
-    CANNON = 6   # 炮
-    PAWN = 7     # 兵/卒
+    SHUAI = 1     # 帅/将
+    SHI = 2       # 仕/士
+    XIANG = 3     # 相/象
+    CHE = 4       # 车
+    MA = 5        # 马
+    PAO = 6       # 炮
+    BING = 7      # 兵/卒
 
 def side_of(piece_code: int) -> Side | None:
     if piece_code > 0:
@@ -37,23 +37,22 @@ def side_of(piece_code: int) -> Side | None:
 def type_of(piece_code: int) -> Piece:
     return Piece(abs(piece_code))
 
-# 用于文本打印（红大写，黑小写）
 PIECE_CHAR = {
     0: ".",
-    +Piece.KING: "K",
-    +Piece.ADVISOR: "A",
-    +Piece.ELEPHANT: "E",
-    +Piece.ROOK: "R",
-    +Piece.KNIGHT: "N",
-    +Piece.CANNON: "C",
-    +Piece.PAWN: "P",
-    -Piece.KING: "k",
-    -Piece.ADVISOR: "a",
-    -Piece.ELEPHANT: "e",
-    -Piece.ROOK: "r",
-    -Piece.KNIGHT: "n",
-    -Piece.CANNON: "c",
-    -Piece.PAWN: "p",
+    +Piece.SHUAI: "帅",
+    +Piece.SHI: "仕",
+    +Piece.XIANG: "相",
+    +Piece.CHE: "车",
+    +Piece.MA: "马",
+    +Piece.PAO: "炮",
+    +Piece.BING: "兵",
+    -Piece.SHUAI: "将",
+    -Piece.SHI: "士",
+    -Piece.XIANG: "象",
+    -Piece.CHE: "车",
+    -Piece.MA: "马",
+    -Piece.PAO: "炮",
+    -Piece.BING: "卒",
 }
 
 def char_of(piece_code: int) -> str:
