@@ -10,6 +10,7 @@ def is_face_to_face(board: Board) -> bool:
 def in_check(board: Board, side: Side) -> bool:
     """side 方是否被将军。占位：后续实现（含照面）。"""
     # TODO: 需要对方的攻击走法判断（可用 movegen 的攻击判定或专用函数）
+
     return False
 
 def is_checkmate(board: Board, side: Side, legal_moves_provider) -> bool:

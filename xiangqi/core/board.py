@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
 import unicodedata
 
 from .const import (
@@ -12,9 +11,9 @@ from .move import Move
 
 @dataclass
 class Board:
-    squares: List[int] = field(default_factory=lambda: [0] * BOARD_SIZE)
+    squares: list[int] = field(default_factory=lambda: [0] * BOARD_SIZE)
     side_to_move: Side = Side.RED
-    move_stack: List[Move] = field(default_factory=list)
+    move_stack: list[Move] = field(default_factory=list)
 
     @staticmethod
     def initial() -> "Board":

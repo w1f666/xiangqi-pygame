@@ -1,13 +1,11 @@
 from __future__ import annotations
-from typing import List
-
 from .board import Board
 from .move import Move
 from .const import Side, Piece, type_of, side_of, i_to_rc, rc_to_i, BOARD_ROWS, BOARD_COLS
 from . import rules
 
-def gen_pseudo_legal_moves(board: Board, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def gen_pseudo_legal_moves(board: Board, side: Side) -> list[Move]:
+    moves: list[Move] = []
     for pos, p in board.iter_pieces(side):
         t = type_of(p)
         if t == Piece.CHE:
@@ -26,9 +24,9 @@ def gen_pseudo_legal_moves(board: Board, side: Side) -> List[Move]:
             moves.extend(_gen_xiang(board, pos, side))
     return moves
 
-def gen_legal_moves(board: Board, side: Side) -> List[Move]:
+def gen_legal_moves(board: Board, side: Side) -> list[Move]:
     """伪合法 -> 合法（过滤走后自家仍被将军/照面）"""
-    legal: List[Move] = []
+    legal: list[Move] = []
     for mv in gen_pseudo_legal_moves(board, side):
         board.make_move(mv)
         # 检查"原side是否被将军"
@@ -55,7 +53,7 @@ def _has_crossed_river(r: int, side: Side) -> bool:
 def _in_own_side(r: int, side: Side) -> bool:
     return (r >= 5) if side == Side.RED else (r <= 4)
 
-def _try_add(board: Board, side: Side, frm: int, to: int, moves: List[Move]) -> bool:
+def _try_add(board: Board, side: Side, frm: int, to: int, moves: list[Move]) -> bool:
     target = board.piece_at(to)
     if target == 0:
         moves.append(Move(frm, to))
@@ -65,8 +63,8 @@ def _try_add(board: Board, side: Side, frm: int, to: int, moves: List[Move]) -> 
             moves.append(Move(frm, to, captured=target))
         return False
 
-def _gen_che(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_che(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     # 四个方向直线
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
@@ -79,8 +77,8 @@ def _gen_che(board: Board, pos: int, side: Side) -> List[Move]:
             cc += dc
     return moves
 
-def _gen_ma(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_ma(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     for dr, dc, lr, lc in [(-2,-1,-1,0),(-2,1,-1,0),(2,-1,1,0),(2,1,1,0),
                            (-1,-2,0,-1),(-1,2,0,1),(1,-2,0,-1),(1,2,0,1)]:
@@ -91,8 +89,8 @@ def _gen_ma(board: Board, pos: int, side: Side) -> List[Move]:
             _try_add(board, side, pos, to, moves)
     return moves
 
-def _gen_pao(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_pao(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     # 四个方向直线
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
@@ -117,8 +115,8 @@ def _gen_pao(board: Board, pos: int, side: Side) -> List[Move]:
             cc += dc
     return moves
 
-def _gen_bing(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_bing(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     forward = -1 if side == Side.RED else 1
     # 未过河
@@ -136,8 +134,8 @@ def _gen_bing(board: Board, pos: int, side: Side) -> List[Move]:
                 _try_add(board, side, pos, to, moves)
     return moves
 
-def _gen_shuai(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_shuai(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
         rr, cc = r + dr, c + dc
@@ -146,8 +144,8 @@ def _gen_shuai(board: Board, pos: int, side: Side) -> List[Move]:
             _try_add(board, side, pos, to, moves)
     return moves
 
-def _gen_shi(board: Board, pos: int, side: Side) -> List[Move]:
-    moves: List[Move] = []
+def _gen_shi(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
     for dr, dc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
         rr, cc = r + dr, c + dc
@@ -156,8 +154,8 @@ def _gen_shi(board: Board, pos: int, side: Side) -> List[Move]:
             _try_add(board, side, pos, to, moves)
     return moves
 
-def _gen_xiang(board: Board, pos: int, side: Side) -> List[Move]:
-    moves = []
+def _gen_xiang(board: Board, pos: int, side: Side) -> list[Move]:
+    moves: list[Move] = []
     r, c = i_to_rc(pos)
 
     for dr, dc, lr, lc in [(-2,-2,-1,-1),(-2,2,-1,1),(2,-2,1,-1),(2,2,1,1)]:
