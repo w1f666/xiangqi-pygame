@@ -1,11 +1,21 @@
 from __future__ import annotations
 from .board import Board
-from .const import Side
+from .const import Side, Piece, i_to_rc, rc_to_i
 
 def is_face_to_face(board: Board) -> bool:
     """将帅照面：同列无遮挡则为 True（非法/将军的一部分）。占位实现后面补。"""
-    # TODO: 找红帅/黑将位置，若同列且中间无子 -> True
-    return False
+    SHUAI = board.find_piece(+Piece.SHUAI)
+    JIANG = board.find_piece(-Piece.SHUAI)
+    if SHUAI is None or JIANG is None:
+        return False
+    r_s, c_s = i_to_rc(SHUAI)
+    r_j, c_j = i_to_rc(JIANG)
+    if c_s != c_j:
+        return False
+    for r in range(r_j + 1, r_s):
+        if board.piece_at(rc_to_i(r, c_s)) != 0:
+            return False
+    return True
 
 def in_check(board: Board, side: Side) -> bool:
     """side 方是否被将军。占位：后续实现（含照面）。"""

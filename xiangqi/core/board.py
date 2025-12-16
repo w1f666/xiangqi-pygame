@@ -114,6 +114,12 @@ class Board:
             if p != 0 and side_of(p) == side:
                 yield i, p
 
+    def find_piece(self, piece_code: int) -> int | None:
+        for i, p in enumerate(self.squares):
+            if p == piece_code:
+                return i
+        return None
+
     def _wcwidth(ch: str) -> int:
         return 2 if unicodedata.east_asian_width(ch) in ('W', 'F') else 1
 

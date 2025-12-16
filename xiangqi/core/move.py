@@ -14,3 +14,4 @@ class Move:
     def __str__(self) -> str:
         return f"{char_of(self.moved_piece)} Move({i_to_rc(self.frm)}->{i_to_rc(self.to)}, cap={self.captured})"
 
+
