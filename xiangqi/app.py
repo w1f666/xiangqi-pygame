@@ -12,12 +12,12 @@ def main():
     side = b.side_to_move
     moves = gen_legal_moves(b, side)
     print(f"Legal moves for {side.name}: {len(moves)}")
-
-    if moves:
-        mv = random.choice(moves)
-        print("Play:", mv)
-        b.make_move(mv)
-        print(b.pretty())
+    for i in range(5):
+        if moves:
+            mv = random.choice(moves)
+            print("Play:", mv)
+            b.make_move(mv)
+            print(b.pretty())
 
 if __name__ == "__main__":
     main()

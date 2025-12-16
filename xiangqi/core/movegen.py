@@ -53,25 +53,26 @@ def _has_crossed_river(r: int, side: Side) -> bool:
 def _in_own_side(r: int, side: Side) -> bool:
     return (r >= 5) if side == Side.RED else (r <= 4)
 
-def _try_add(board: Board, side: Side, frm: int, to: int, moves: list[Move]) -> bool:
+def _try_add(board: Board, side: Side, frm: int, to: int, moved_piece: int, moves: list[Move]) -> bool:
     target = board.piece_at(to)
     if target == 0:
-        moves.append(Move(frm, to))
+        moves.append(Move(frm, to, moved_piece=moved_piece))
         return True
     else:
         if side_of(target) != side:
-            moves.append(Move(frm, to, captured=target))
+            moves.append(Move(frm, to, moved_piece=moved_piece, captured=target))
         return False
 
 def _gen_che(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     # 四个方向直线
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
         rr, cc = r + dr, c + dc
         while _in_bounds(rr, cc):
             to = rc_to_i(rr, cc)
-            if not _try_add(board, side, pos, to, moves):
+            if not _try_add(board, side, pos, to, piece, moves):
                 break
             rr += dr
             cc += dc
@@ -79,6 +80,7 @@ def _gen_che(board: Board, pos: int, side: Side) -> list[Move]:
 
 def _gen_ma(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     for dr, dc, lr, lc in [(-2,-1,-1,0),(-2,1,-1,0),(2,-1,1,0),(2,1,1,0),
                            (-1,-2,0,-1),(-1,2,0,1),(1,-2,0,-1),(1,2,0,1)]:
@@ -86,11 +88,12 @@ def _gen_ma(board: Board, pos: int, side: Side) -> list[Move]:
         lr, lc = r + lr, c + lc
         if _in_bounds(rr, cc) and board.piece_at(rc_to_i(lr, lc)) == 0:
             to = rc_to_i(rr, cc)
-            _try_add(board, side, pos, to, moves)
+            _try_add(board, side, pos, to, piece, moves)
     return moves
 
 def _gen_pao(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     # 四个方向直线
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
@@ -103,13 +106,13 @@ def _gen_pao(board: Board, pos: int, side: Side) -> list[Move]:
 
             if not screen_found:
                 if target == 0:
-                    moves.append(Move(pos, to))
+                    moves.append(Move(pos, to, moved_piece=piece))
                 else:
                     screen_found = True # 找到炮架，准备吃子
             else:
                 if target != 0:
                     if side_of(target) != side:
-                        moves.append(Move(pos, to, captured=target))
+                        moves.append(Move(pos, to, moved_piece=piece, captured=target))
                     break
             rr += dr
             cc += dc
@@ -117,13 +120,14 @@ def _gen_pao(board: Board, pos: int, side: Side) -> list[Move]:
 
 def _gen_bing(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     forward = -1 if side == Side.RED else 1
     # 未过河
     rr, cc = r + forward, c
     if _in_bounds(rr, cc):
         to = rc_to_i(rr, cc)
-        _try_add(board, side, pos, to, moves)
+        _try_add(board, side, pos, to, piece, moves)
 
     # 过河后可左右
     if _has_crossed_river(r, side):
@@ -131,31 +135,34 @@ def _gen_bing(board: Board, pos: int, side: Side) -> list[Move]:
             rr, cc = r, c + dc
             if _in_bounds(rr, cc):
                 to = rc_to_i(rr, cc)
-                _try_add(board, side, pos, to, moves)
+                _try_add(board, side, pos, to, piece, moves)
     return moves
 
 def _gen_shuai(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
         rr, cc = r + dr, c + dc
         if _in_bounds(rr, cc) and _in_palace(rr, cc, side):
             to = rc_to_i(rr, cc)
-            _try_add(board, side, pos, to, moves)
+            _try_add(board, side, pos, to, piece,moves)
     return moves
 
 def _gen_shi(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
     for dr, dc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
         rr, cc = r + dr, c + dc
         if _in_bounds(rr, cc) and _in_palace(rr, cc, side):
             to = rc_to_i(rr, cc)
-            _try_add(board, side, pos, to, moves)
+            _try_add(board, side, pos, to, piece, moves)
     return moves
 
 def _gen_xiang(board: Board, pos: int, side: Side) -> list[Move]:
     moves: list[Move] = []
+    piece = board.piece_at(pos)
     r, c = i_to_rc(pos)
 
     for dr, dc, lr, lc in [(-2,-2,-1,-1),(-2,2,-1,1),(2,-2,1,-1),(2,2,1,1)]:
@@ -163,5 +170,6 @@ def _gen_xiang(board: Board, pos: int, side: Side) -> list[Move]:
         lr, lc= r + lr, c + lc
         if (_in_own_side(rr, side) and _in_bounds(rr, cc) and board.piece_at(rc_to_i(lr, lc)) == 0):
             to = rc_to_i(rr, cc)
-            _try_add(board, side, pos, to, moves)
+            _try_add(board, side, pos, to, piece, moves)
+
     return moves
