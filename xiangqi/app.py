@@ -12,7 +12,7 @@ def main():
     side = b.side_to_move
     moves = gen_legal_moves(b, side)
     print(f"Legal moves for {side.name}: {len(moves)}")
-    for i in range(5):
+    for _ in range(100):
         if moves:
             mv = random.choice(moves)
             print("Play:", mv)
