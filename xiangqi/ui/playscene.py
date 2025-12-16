@@ -1,9 +1,10 @@
 from .scenes import Scene
-from .game_config import SQUARE_SIZE
+from .game_config import SQUARE_SIZE, GAME_WIDTH, GAME_HEIGHT
 import pygame
+from xiangqi.core.const import rc_to_i
 class PlayScene(Scene):
     def on_enter(self, **kwards):
-        return super().on_enter(**kwards)
+        pass
 
     def handle_event(self, event):
         return super().handle_event(event)
@@ -36,6 +37,28 @@ class PlayScene(Scene):
         board_bg_scaled = pygame.transform.smoothscale(board_bg, (board_width, board_height))
         board_x = (screen_w - board_width) // 2
         board_y = (screen_h - board_height) // 2
+        self.board_x = board_x
+        self.board_y = board_y
         screen.blit(board_bg_scaled, (board_x, board_y))
+        self.draw_pieces(screen, board_x, board_y, self.square_size)
+
+    def draw_pieces(self, screen, board_x, board_y, square_size):
+        if not hasattr(self, 'board'):
+            from xiangqi.core.board import Board
+            self.board = Board()
+            self.board.initial()
+        for row in range(10):
+            for col in range(9):
+                piece_code = self.board.squares[row * 9 + col]
+                if piece_code == 0:
+                    continue
+                piece_x = board_x + col * square_size + square_size // 2
+                piece_y = board_y + row * square_size + square_size // 2
+
+                piece_img = self.game.assets.get_piece_image(piece_code)
+
+                piece_img_scaled = pygame.transform.smoothscale(piece_img, (square_size - 10, square_size - 10))
+                piece_rect = piece_img_scaled.get_rect(center=(piece_x, piece_y))
+                screen.blit(piece_img_scaled, piece_rect)
 
 
