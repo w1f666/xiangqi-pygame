@@ -3,6 +3,7 @@ from .scenes import Scene
 import pygame
 from xiangqi.core.const import rc_to_i, side_of
 from xiangqi.core.movegen import gen_legal_moves
+from xiangqi.core.move import Move
 class PlayScene(Scene):
     def on_enter(self, **kwards):
         self.board = Board.initial() # 初始化棋盘一次即可
@@ -30,6 +31,14 @@ class PlayScene(Scene):
                 self.cand_moves = gen_legal_moves(self.board, self.board.side_to_move)
                 self.cand_moves = [mv for mv in self.cand_moves if mv.frm == frm] # 只保留该选中棋子的走法
                 return
+            elif self.selected is not None:
+                to = rc_to_i(row, col)
+                move = next((mv for mv in self.cand_moves if mv.to == to), None)
+                if move is not None:
+                    self.board.make_move(move)
+                    self.selected = None
+                    self.cand_moves = []
+
 
     def draw(self, screen: pygame.Surface):
         bg = self.game.assets.bg
