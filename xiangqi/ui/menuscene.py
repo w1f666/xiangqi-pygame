@@ -12,8 +12,8 @@ class MenuScene(Scene):
         self.btn_bg = pygame.image.load(str(base_path / 'btn_bg.png'))
 
         #我的字体文件目录
-        font_path = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
-        self.font = pygame.font.Font(font_path, 20)
+        font_path = base_path.parent.parent / "assets" /"fonts" / "NotoSerifSC-Regular.otf"
+        self.font = pygame.font.Font(str(font_path), 20)
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
