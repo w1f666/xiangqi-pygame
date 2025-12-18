@@ -35,7 +35,7 @@ def find_best_move(board, depth=3):
 
     for move in gen_legal_moves(board, board.side_to_move):
         board.make_move(move)
-        board_value = minimax(board, depth - 1, float('-inf'), float('inf'), board.side_to_move == Side.BLACK)
+        board_value = minimax(board, depth - 1, float('-inf'), float('inf'), board.side_to_move == Side.RED)
         board.undo_move()
 
         if board.side_to_move == Side.RED:

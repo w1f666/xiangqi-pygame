@@ -4,7 +4,6 @@ import pygame
 from xiangqi.core.const import Side, rc_to_i, side_of, i_to_rc
 from xiangqi.core.movegen import gen_legal_moves
 from xiangqi.ai.search import find_best_move
-from xiangqi.core.rules import in_check
 class PlayScene(Scene):
     def on_enter(self, **kwards):
         self.board = Board.initial() # 初始化棋盘一次即可
@@ -23,7 +22,7 @@ class PlayScene(Scene):
             row, col = rc
             to = rc_to_i(row, col)
             # 调试用
-            print(f"Clicked on row={row}, col={col}")
+            # print(f"Clicked on row={row}, col={col}")
             piece_to = self.board.squares[to]
 
             if self.selected is not None:
@@ -32,15 +31,15 @@ class PlayScene(Scene):
                     self.board.make_move(move)
                     self.selected = None
                     self.cand_moves = []
-                    print(f"Made move: {move}")
+                    # print(f"Made move: {move}")
 
                     if self.board.side_to_move == Side.BLACK:
                         black_moves = gen_legal_moves(self.board, Side.BLACK)
                         if black_moves:
-                            ai_move = find_best_move(self.board, depth=2)
+                            ai_move = find_best_move(self.board, depth=3)
                             if ai_move is not None:
                                 self.board.make_move(ai_move)
-                                print(f"AI made move: {ai_move}")
+                                # print(f"AI made move: {ai_move}")
                                 self.selected = None
                                 self.cand_moves = []
                         else:

@@ -4,7 +4,7 @@ from xiangqi.core.const import Piece
 # 第一部分：材质价值表 (Material Value)
 # =========================================================
 # 参考: ElephantEye 中的标准分值 + 象棋理论
-PIECE_VALUES = {
+PIECE_PER_VALUE = {
     Piece.SHUAI: 10000,   # 将帅：无法交换，用极大值表示游戏结束
     Piece.CHE: 900,       # 车：最强棋子
     Piece.PAO: 450,       # 炮：需要炮架才能发挥威力
@@ -14,10 +14,6 @@ PIECE_VALUES = {
     Piece.BING: 10,       # 兵/卒：最弱单位（过河后价值可以翻倍）
     Piece.EMPTY: 0        # 空位
 }
-
-# 别名，保持向后兼容
-PIECE_PER_VALUE = PIECE_VALUES
-
 
 # ==========================================================
 # 第二部分：位置价值表 (Piece-Square Tables, PST)
