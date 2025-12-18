@@ -47,7 +47,7 @@ def find_best_move(board, max_depth=3, time_limit=5.0):
             if time.time() - start_time > time_limit:
                 break
             board.make_move(move)
-            board_value = minimax(board, current_depth - 1, alpha, beta, board.side_to_move == Side.RED)
+            board_value = minimax(board, current_depth - 1, alpha, beta, not is_red_turn)
             board.undo_move()
 
             if is_red_turn:
@@ -61,7 +61,8 @@ def find_best_move(board, max_depth=3, time_limit=5.0):
 
         if current_iter_best_move is not None:
             best_move = current_iter_best_move
+        best_value = alpha if is_red_turn else beta
         print(
-                f"深度 {current_depth} 完成 | 分数区间: {beta}-{alpha} | 最佳: {current_iter_best_move} | 耗时: {time.time() - start_time:.2f}s")
+                f"深度 {current_depth} 完成 | 分数: {best_value} | 最佳: {current_iter_best_move} | 耗时: {time.time() - start_time:.2f}s")
 
     return best_move
