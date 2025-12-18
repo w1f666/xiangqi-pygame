@@ -1,13 +1,15 @@
 from .eval import evaluate
 from xiangqi.core.const import Side
 from xiangqi.core.movegen import gen_legal_moves
+import time
+from .ai_config import INF
 
 def minimax(board, depth, alpha, beta, is_red_turn):
     if depth == 0:
         return evaluate(board)
 
     if is_red_turn:
-        max_eval = float('-inf')
+        max_eval = -INF
         for move in gen_legal_moves(board, Side.RED):
             board.make_move(move)
             eval = minimax(board, depth - 1, alpha, beta, False)
@@ -18,7 +20,7 @@ def minimax(board, depth, alpha, beta, is_red_turn):
                 break
         return max_eval
     else:
-        min_eval = float('inf')
+        min_eval = INF
         for move in gen_legal_moves(board, Side.BLACK):
             board.make_move(move)
             eval = minimax(board, depth - 1, alpha, beta, True)
@@ -31,11 +33,14 @@ def minimax(board, depth, alpha, beta, is_red_turn):
 
 def find_best_move(board, depth=3):
     best_move = None
-    best_value = float('-inf') if board.side_to_move == Side.RED else float('inf')
+    is_red_turn = board.side_to_move == Side.RED
+    best_value = -INF if board.side_to_move == Side.RED else INF
+
+    time_start = time.time()
 
     for move in gen_legal_moves(board, board.side_to_move):
         board.make_move(move)
-        board_value = minimax(board, depth - 1, float('-inf'), float('inf'), board.side_to_move == Side.RED)
+        board_value = minimax(board, depth - 1, -INF, INF, board.side_to_move == Side.RED)
         board.undo_move()
 
         if board.side_to_move == Side.RED:
