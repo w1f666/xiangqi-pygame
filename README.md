@@ -222,6 +222,16 @@ python xiangqi/test/test_play.py
 - [JavaScript 象棋实现](https://github.com/itlwei/Chess)（菜单 UI 参考）
 - [chessAI 预训练模型](https://github.com/yuqangy123/chessAI)（AI 参考）
 - [Pygame 官方文档](https://www.pygame.org)
+- [ChessAI 无监督强化学习+策略网络训练的中国象棋AI](https://github.com/yuqangy123/chessAI/tree/main)
+- [pikafish UCIxiangqi engine](https://github.com/official-pikafish/Pikafish)
+- [Chinese Chess（中国象棋）](https://github.com/sulioppa/ChineseChess/tree/master)
+- [《对弈程序基本技术》专题](https://www.xqbase.com/computer/search_intro1.htm)
+- [ElephantEye - a XiangQi (Chinese Chess) Engine for XQWizard with Strong AI](https://github.com/xqbase/eleeye/tree/master)
+- [象棋引擎与资料库在提高棋力中的应用 ](https://www.wxf-xiangqi.org/images/hangzhou-chess/2022_37_li_xusheng_xiangqi_and_data_.pdf)
+- [Pygame的生态演变](https://github.com/Leonardo8133/Simulacao-de-Ecossistema)
+- [象棋网页在线体验](https://itlwei.github.io/Chess/)
+- [[ICML 2021] DouZero: Mastering DouDizhu with Self-Play Deep Reinforcement Learning | 斗地主AI](https://github.com/kwai/DouZero)
+- [中国象棋AI实现](https://github.com/chenchihwen/chinese-chess-ai)
 
 ## 开发笔记
 
